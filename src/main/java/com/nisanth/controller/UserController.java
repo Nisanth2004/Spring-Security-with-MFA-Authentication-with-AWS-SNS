@@ -45,4 +45,18 @@ public class UserController {
 
     }
 
+
+
+    @GetMapping("/user-authentication")
+    public String getAuthPage(@ModelAttribute("user") User user)
+    {
+        return "auth";
+    }
+
+
+    @PostMapping("/user-authentication")
+    public String authenticateUser(@ModelAttribute("user") User user,Model model)
+    {
+        return userService.authenticateUser(user,model);
+    }
 }
