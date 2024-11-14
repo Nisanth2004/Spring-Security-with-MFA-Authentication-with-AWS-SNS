@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Optional;
 
@@ -58,5 +59,14 @@ public class UserController {
     public String authenticateUser(@ModelAttribute("user") User user,Model model)
     {
         return userService.authenticateUser(user,model);
+    }
+
+
+
+    @ResponseBody
+    @GetMapping("/otp-validation")
+    public String validationPage()
+    {
+        return "Validation Page";
     }
 }
