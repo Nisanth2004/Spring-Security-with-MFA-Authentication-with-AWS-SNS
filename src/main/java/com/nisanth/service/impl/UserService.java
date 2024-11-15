@@ -5,6 +5,7 @@ import com.nisanth.model.User;
 import com.nisanth.respository.OtpRepository;
 import com.nisanth.respository.UserRepository;
 import com.nisanth.service.UserServiceContract;
+import com.nisanth.util.MessageUtil;
 import com.nisanth.util.OtpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,6 +17,8 @@ import java.util.Optional;
 @Service
 public class UserService implements UserServiceContract {
 
+
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -24,6 +27,13 @@ public class UserService implements UserServiceContract {
 
     @Autowired
     private OtpRepository otpRepository;
+
+    @Autowired
+    private MessageUtil messageUtil;  // Inject MessageUtil
+
+    public UserService() {
+    }
+
     @Override
     public void saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -69,6 +79,8 @@ public class UserService implements UserServiceContract {
         Optional<Otp> findUser=otpRepository.findOtpByEmail(user.getEmail());
         // generate otp
        String code= OtpUtil .generateOtp();
+
+        messageUtil.sendMessage(user.getPhoneNumber(),"Here is your OTP: "+code);
 
        // check user is present update the OTP table
         if(findUser.isPresent())
